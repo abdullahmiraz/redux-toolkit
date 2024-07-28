@@ -1,30 +1,33 @@
 import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { add } from "../store/cartSlice";
+import { getProducts } from "../store/productSlice";
+import { Alert } from "react-bootstrap";
 
 const Product = () => {
   const dispatch = useDispatch();
+  const { data: products, status } = useSelector((state) => state.products);
 
-  const [products, setProducts] = useState([]);
-
+  console.log(products);
   useEffect(() => {
-    const allProducts = async () => {
-      try {
-        await fetch(`https://fakestoreapi.com/products`)
-          .then((res) => res.json())
-          .then((data) => {
-            setProducts(data);
-            console.log(products);
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    allProducts();
-  }, []);
+    dispatch(getProducts());
+  }, [dispatch]);
 
+  if (status === "loading") {
+    return <div>Loading ...</div>;
+  }
+  if (status === "error") {
+    return (
+      <Alert key={"danger"} variant={"danger"}>
+        Something Went Wrong ...
+      </Alert>
+    );
+  }
+  if (status === "loading") {
+    return <div>Loading ...</div>;
+  }
   const addToCart = (product) => {
     // dispatch as add action
     dispatch(add(product));
