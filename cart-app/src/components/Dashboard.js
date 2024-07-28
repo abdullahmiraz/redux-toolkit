@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import Product from "./Product";
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
-  )
-}
+    <div>
+      <Product />
+    </div>
+  );
+};
 
-export default Dashboard
+export default Dashboard;
